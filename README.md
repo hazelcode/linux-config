@@ -5,7 +5,9 @@ Mis configuraciones personales de Linux.
 ## Especificaciones
 
 **Distro recomendada:** Fedora Workstation 45
+
 **Shell:** GNOME 45
+
 **Version de GTK:** GTK 4
 
 *Este repositorio provee configuraciones para los siguientes programas o paquetes, pero no se limita a:*
