@@ -1,6 +1,6 @@
 # linux-config
 
-Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores como yo. Todo lo que se instala y configura aquí tiene opinión propia, conforme a mis gustos personales y mi stack de desarrollo de software.
+Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores como yo. Todo lo que se instala y configura aquí tiene opinión propia y personalidad, conforme a mis gustos personales y mi stack de desarrollo de software.
 
 ## Preferencias personales
 
@@ -18,7 +18,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 
 **Distro recomendada:** Fedora Workstation 45
 
-**Shell:** GNOME 45
+**Shell:** GNOME 51.1
 
 **Versión de GTK:** GTK 4
 
@@ -45,15 +45,19 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 
 ### DNF
 - *Habilita repositorio de software privativo*
-- **No instala Ghostty, Neovim ni Fastfetch automáticamente (Por ahora)**
+- Ghostty
+- Neovim
+- Fastfetch
 - Zsh
-- Make
+- Ninja
 - CMake
 - GCC
 - Clang
-- OpenJDK 25
+- OpenJDK 25 LTS
 - Vscode *(Intencionalmente como paquete de sistema, no como Flatpak debido al sandbox)*
 
+
+### Configuraciones
 *Este repositorio provee configuraciones para los siguientes programas o paquetes, pero no se limita a:*
 
 - ghostty
