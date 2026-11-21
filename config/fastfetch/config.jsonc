@@ -1,0 +1,43 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "display",
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "terminal",
+    "terminalfont",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "disk",
+    "battery",
+    "poweradapter",
+    "localip",
+    "locale",
+    "break",
+    "colors"
+  ],
+    "logo": {
+        "type": "kitty",
+        "source": "$(ls ~/.config/fastfetch/logos/*.png ~/.config/fastfetch/logos/*.jpg ~/.config/fastfetch/logos/*.webp 2>/dev/null | shuf -n 1)",
+        "width": 40,
+        "padding": {
+            "top": 2,
+            "left": 4
+        }
+    }
+}
