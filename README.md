@@ -36,7 +36,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 - Una instalación manual de Rust (Via script)
 
 ### Flatpak
-- Gearlever
+- Gear lever
 - Flatseal
 - GNOME Tweaks
 - GNOME Extensions
