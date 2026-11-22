@@ -86,9 +86,9 @@ for dir in "${CONFIG_DIRS[@]}"; do
 done
 
 # ==============================================================================
-# 3. SINCRONIZAR TEMAS (~/.themes) E ICONOS (~/.icons)
+# 3. SINCRONIZAR TEMAS (~/.themes) E ICONOS/CURSORES (~/.icons)
 # ==============================================================================
-log_step "Sincronizando temas instalados..."
+log_step "Sincronizando temas, iconos y cursores instalados..."
 
 for theme in "$REPO_DIR"/themes/*; do
   [ -d "$theme" ] || continue
@@ -100,20 +100,19 @@ for theme in "$REPO_DIR"/themes/*; do
   fi
 done
 
-if [ -d "$REPO_DIR/icons" ] && [ -d "$HOME/.icons" ]; then
-  for icon_pack in "$REPO_DIR"/icons/*; do
+if [ -d "$HOME/.icons" ]; then
+  mkdir -p "$REPO_DIR/icons"
+  for icon_pack in "$HOME/.icons"/*; do
     [ -d "$icon_pack" ] || continue
     icon_name=$(basename "$icon_pack")
-    if [ -d "$HOME/.icons/$icon_name" ]; then
-      rm -rf "${REPO_DIR:?}/icons/${icon_name}"
-      cp -a "$HOME/.icons/$icon_name" "$REPO_DIR/icons/"
-      log_success "Actualizado: icons/$icon_name"
-    fi
+    rm -rf "${REPO_DIR:?}/icons/${icon_name}"
+    cp -a "$icon_pack" "$REPO_DIR/icons/"
+    log_success "Respaldado en icons/: $icon_name"
   done
 fi
 
 # ==============================================================================
-# 4. SINCRONIZAR WALLPAPER ACTUAL DE GNOME
+# 4. SINCRONIZAR WALLPAPER ACTUAL DE GNOME Y STICKER DE GDM (/etc/gdm-logo)
 # ==============================================================================
 if command -v gsettings >/dev/null 2>&1; then
   CURRENT_WALL=$(gsettings get org.gnome.desktop.background picture-uri-dark | tr -d "'" | sed 's|^file://||')
@@ -127,6 +126,12 @@ if command -v gsettings >/dev/null 2>&1; then
       log_info "El fondo de pantalla en wallpaper/ ya coincide con el actual."
     fi
   fi
+fi
+
+if [ -f "/etc/gdm-logo" ]; then
+  mkdir -p "$REPO_DIR/gdm"
+  cp -f /etc/gdm-logo "$REPO_DIR/gdm/gdm-logo"
+  log_success "Respaldado sticker de GDM: gdm/gdm-logo"
 fi
 
 log_step "Sincronización completada. Revisa los cambios con 'git status' y 'git diff'."

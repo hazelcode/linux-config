@@ -67,9 +67,9 @@ if command -v gsettings >/dev/null 2>&1; then
 fi
 
 # ==============================================================================
-# 3. FONDO DE PANTALLA (WALLPAPER)
+# 3. FONDO DE PANTALLA PRINCIPAL (WALLPAPER)
 # ==============================================================================
-log_step "Configurando fondo de pantalla..."
+log_step "Configurando fondo de pantalla principal..."
 
 if command -v xdg-user-dir >/dev/null 2>&1; then
   PICTURES_DIR="$(xdg-user-dir PICTURES)"
@@ -95,7 +95,73 @@ if [ -n "$FIRST_WALLPAPER" ]; then
 fi
 
 # ==============================================================================
-# 4. TEMA DE ARRANQUE GRUB2 (tachibana)
+# 4. PERSONALIZACIÓN DE PANTALLA DE INICIO GDM (FONDO + STICKER /etc/gdm-logo)
+# ==============================================================================
+log_step "Configurando fondo, cursores y sticker en GDM..."
+
+GDM_ASSETS_DIR="/usr/share/backgrounds/linux-config"
+sudo mkdir -p "$GDM_ASSETS_DIR" /etc/dconf/profile /etc/dconf/db/gdm.d
+
+# Copiar cursores también a /usr/share/icons/ para que GDM pueda leerlos en el login
+if [ -d "$REPO_DIR/icons" ]; then
+  for icon_pack in "$REPO_DIR"/icons/*; do
+    [ -d "$icon_pack" ] || continue
+    icon_name=$(basename "$icon_pack")
+    sudo rm -rf "/usr/share/icons/${icon_name}"
+    sudo cp -a "$icon_pack" "/usr/share/icons/"
+  done
+fi
+
+GDM_WALL_PATH=""
+if [ -n "$FIRST_WALLPAPER" ]; then
+  GDM_WALL_NAME="gdm-wallpaper.${FIRST_WALLPAPER##*.}"
+  sudo cp -f "$FIRST_WALLPAPER" "$GDM_ASSETS_DIR/$GDM_WALL_NAME"
+  sudo chmod 644 "$GDM_ASSETS_DIR/$GDM_WALL_NAME"
+  GDM_WALL_PATH="$GDM_ASSETS_DIR/$GDM_WALL_NAME"
+fi
+
+GDM_LOGO_PATH=""
+if [ -f "$REPO_DIR/gdm/gdm-logo" ]; then
+  sudo cp -f "$REPO_DIR/gdm/gdm-logo" /etc/gdm-logo
+  sudo chmod 644 /etc/gdm-logo
+  GDM_LOGO_PATH="/etc/gdm-logo"
+fi
+
+sudo tee /etc/dconf/profile/gdm > /dev/null << 'GDMPROF'
+user-db:user
+system-db:gdm
+file-db:/usr/share/gdm/greeter-dconf-defaults
+GDMPROF
+
+CURSOR_NAME=$(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null || echo "'Capitaine Cursors'")
+ICON_NAME=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || echo "'Adwaita'")
+
+{
+  echo "[org/gnome/desktop/interface]"
+  echo "color-scheme='prefer-dark'"
+  echo "accent-color='blue'"
+  echo "cursor-theme=${CURSOR_NAME}"
+  echo "icon-theme=${ICON_NAME}"
+  echo "clock-format='12h'"
+  echo ""
+  echo "[org/gnome/desktop/background]"
+  if [ -n "$GDM_WALL_PATH" ]; then
+    echo "picture-uri='file://${GDM_WALL_PATH}'"
+    echo "picture-uri-dark='file://${GDM_WALL_PATH}'"
+    echo "picture-options='zoom'"
+  fi
+  echo ""
+  echo "[org/gnome/login-screen]"
+  if [ -n "$GDM_LOGO_PATH" ]; then
+    echo "logo='${GDM_LOGO_PATH}'"
+  fi
+} | sudo tee /etc/dconf/db/gdm.d/96-linux-config > /dev/null
+
+sudo dconf update
+log_success "GDM configurado (fondo sincronizado${GDM_LOGO_PATH:+ y sticker /etc/gdm-logo aplicado})."
+
+# ==============================================================================
+# 5. TEMA DE ARRANQUE GRUB2 (tachibana)
 # ==============================================================================
 log_step "Instalando tema de GRUB2 (tachibana)..."
 
