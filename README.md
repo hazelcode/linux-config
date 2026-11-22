@@ -31,7 +31,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 
 ### Instalación en un sistema limpio
 ```bash
-git clone [https://github.com/hazelcode/linux-config.git](https://github.com/hazelcode/linux-config.git)
+git clone https://github.com/hazelcode/linux-config
 cd linux-config
 ./install.sh
 ```
