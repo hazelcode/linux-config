@@ -103,7 +103,6 @@ log_step "Configurando fondo, cursores y sticker en GDM..."
 GDM_ASSETS_DIR="/usr/share/backgrounds/linux-config"
 sudo mkdir -p "$GDM_ASSETS_DIR" /etc/dconf/profile /etc/dconf/db/gdm.d
 
-# Copiar cursores a /usr/share/icons/ para el cursor de GDM
 if [ -d "$REPO_DIR/icons" ]; then
   for icon_pack in "$REPO_DIR"/icons/*; do
     [ -d "$icon_pack" ] || continue
@@ -128,7 +127,7 @@ if [ -f "$REPO_DIR/gdm/gdm-logo" ]; then
   GDM_LOGO_PATH="/etc/gdm-logo"
 fi
 
-# Parchear gnome-shell-theme.gresource para que GDM muestre el fondo real
+# Parchear gnome-shell-theme.gresource (variantes claro y oscuro para GNOME 50/51)
 ORIG_GRESOURCE="/usr/share/gnome-shell/gnome-shell-theme.gresource"
 if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
   if ! command -v glib-compile-resources >/dev/null 2>&1; then
@@ -136,7 +135,6 @@ if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
     sudo dnf install -y glib2-devel
   fi
 
-  # Respaldar el gresource original una sola vez si no existe backup previo
   if [ ! -f "${ORIG_GRESOURCE}.orig" ]; then
     sudo cp -f "$ORIG_GRESOURCE" "${ORIG_GRESOURCE}.orig"
   fi
@@ -144,7 +142,6 @@ if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
   WORK_DIR=$(mktemp -d)
   mkdir -p "$WORK_DIR/theme"
 
-  # Extraer todos los recursos del tema original de GNOME Shell
   for res in $(gresource list "${ORIG_GRESOURCE}.orig"); do
     rel_path="${res#/org/gnome/shell/theme/}"
     mkdir -p "$WORK_DIR/theme/$(dirname "$rel_path")"
@@ -153,7 +150,6 @@ if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
 
   cp -f "$GDM_WALL_PATH" "$WORK_DIR/theme/$GDM_WALL_NAME"
 
-  # Generar el manifiesto XML para glib-compile-resources
   {
     echo '<?xml version="1.0" encoding="UTF-8"?>'
     echo '<gresources>'
@@ -165,17 +161,23 @@ if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
     echo '</gresources>'
   } > "$WORK_DIR/theme/gnome-shell-theme.gresource.xml"
 
-  # Inyectar regla CSS de fondo en #lockDialogGroup dentro de gnome-shell.css
-  cat << CSS >> "$WORK_DIR/theme/gnome-shell.css"
+  # Inyectar en gnome-shell.css y gnome-shell-dark.css (GNOME 50+)
+  for css_file in "$WORK_DIR/theme/gnome-shell.css" "$WORK_DIR/theme/gnome-shell-dark.css"; do
+    if [ -f "$css_file" ]; then
+      cat << CSS >> "$css_file"
 
 /* Custom GDM Wallpaper - linux-config */
-#lockDialogGroup {
-  background: #14181f url("resource:///org/gnome/shell/theme/${GDM_WALL_NAME}");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+#lockDialogGroup,
+.login-dialog {
+  background-color: #14181f !important;
+  background-image: url("resource:///org/gnome/shell/theme/${GDM_WALL_NAME}") !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 CSS
+    fi
+  done
 
   glib-compile-resources --sourcedir="$WORK_DIR/theme" \
     --target="$WORK_DIR/gnome-shell-theme.gresource" \
@@ -183,7 +185,7 @@ CSS
 
   sudo cp -f "$WORK_DIR/gnome-shell-theme.gresource" "$ORIG_GRESOURCE"
   rm -rf "$WORK_DIR"
-  log_success "Tema de GDM recompilado con tu fondo de pantalla."
+  log_success "Tema de GDM (claro y oscuro) recompilado con tu fondo de pantalla."
 fi
 
 sudo tee /etc/dconf/profile/gdm > /dev/null << 'GDMPROF'
