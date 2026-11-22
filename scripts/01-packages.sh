@@ -7,10 +7,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-log_info()    { echo -e "${BLUE}[INFO]${NC} $1"; }
-log_step()    { echo -e "\n${CYAN}==>${NC} ${1}"; }
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_step() { echo -e "\n${CYAN}==>${NC} ${1}"; }
 log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
-log_warn()    { echo -e "${YELLOW}[AVISO]${NC} $1"; }
+log_warn() { echo -e "${YELLOW}[AVISO]${NC} $1"; }
 
 FEDORA_VER=$(rpm -E %fedora)
 
@@ -26,7 +26,7 @@ sudo dnf install -y \
 if [ ! -f /etc/yum.repos.d/vscode.repo ]; then
   log_info "Agregando repositorio oficial de Microsoft VS Code..."
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  sudo tee /etc/yum.repos.d/vscode.repo > /dev/null << 'REPO'
+  sudo tee /etc/yum.repos.d/vscode.repo >/dev/null <<'REPO'
 [code]
 name=Visual Studio Code
 baseurl=https://packages.microsoft.com/yumrepos/vscode
@@ -58,6 +58,8 @@ DNF_PACKAGES=(
   zsh-autosuggestions
   zsh-syntax-highlighting
   util-linux-user
+  glib2-devel
+  git
   gnome-tweaks
   gcc
   gcc-c++
@@ -87,6 +89,7 @@ FLATPAK_APPS=(
   it.mijorus.gearlever
   com.github.tchx84.Flatseal
   org.gnome.Extensions
+  com.mattjakeman.ExtensionManager
   io.github.realmazharhussain.GdmSettings
   org.apache.netbeans
 )

@@ -24,6 +24,21 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 
 **Shell de preferencia:** Zsh
 
+
+## Uso rápido
+
+### Instalación en un sistema limpio
+```bash
+git clone [https://github.com/hazelcode/linux-config.git](https://github.com/hazelcode/linux-config.git)
+cd linux-config
+./install.sh
+```
+
+### Consulta para más opciones (Instala partes específicas)
+```
+./install.sh --help
+```
+
 ## Programas o componentes a instalar
 
 **Advertencia: Por preferencias personales se instalarán herramientas de desarrollo como .NET, Rust y C/C++, así como editores de código e IDEs como Apache NetBeans y VSCode**
@@ -38,8 +53,8 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 ### Flatpak
 - Gear lever
 - Flatseal
-- GNOME Tweaks
 - GNOME Extensions
+- GNOME Extension Manager (por Matthew Jakeman)
 - GDM Settings
 - Apache NetBeans
 
@@ -51,15 +66,18 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 - Zsh
 - `zsh-autosuggestions`
 - `zsh-syntax-highlighting`
-- `util-linux-user`
+- `util-linux-user` *(Asegura la disponibilidad del comando chsh)*
+- `glib2-devel` *(Indispensable para compilar la personalización del GDM)*
+- Git
 - Ninja
 - CMake
 - Make
 - GCC
 - Clang
+- GDB
 - OpenJDK 25 LTS
 - Vscode *(Intencionalmente como paquete de sistema, no como Flatpak debido al sandbox)*
-
+- GNOME Tweaks
 
 ### Configuraciones
 *Este repositorio provee configuraciones para los siguientes programas o paquetes, pero no se limita a:*
@@ -69,6 +87,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 - neovim
 - fastfetch
 - grub2
+- gtk3
 - gtk4
 
 El repositorio configura una instalación manual de **Dotnet** y el servidor LSP de **Roslyn** listos para Lazyvim, así como la **variable de entorno $PATH**
