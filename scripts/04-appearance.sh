@@ -50,7 +50,7 @@ if [ -d "$REPO_DIR/icons" ]; then
 fi
 
 # ==============================================================================
-# 2. RESTAURACIÓN DE AJUSTES DE GNOME Y VENTANAS (dconf + gsettings)
+# 2. RESTAURACIÓN DE AJUSTES DE GNOME Y BOTONES DE VENTANA (dconf + gsettings)
 # ==============================================================================
 if [ -f "$REPO_DIR/dotfiles/gnome-settings.dconf" ]; then
   log_step "Restaurando configuraciones de GNOME y ventanas (dconf)..."
@@ -59,10 +59,11 @@ if [ -f "$REPO_DIR/dotfiles/gnome-settings.dconf" ]; then
 fi
 
 if command -v gsettings >/dev/null 2>&1; then
-  log_info "Forzando estilo oscuro de ventanas y temas Material-BL..."
+  log_info "Aplicando tema oscuro, Material-BL y botones estilo macOS..."
   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' || true
   gsettings set org.gnome.desktop.interface gtk-theme 'Material-BL-LB-Dark' || true
   gsettings set org.gnome.desktop.wm.preferences theme 'Material-BL-LB-Dark' || true
+  gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu' || true
   gsettings set org.gnome.shell.extensions.user-theme name 'Material-BL-GS-Dark' 2>/dev/null || true
 fi
 
@@ -95,14 +96,14 @@ if [ -n "$FIRST_WALLPAPER" ]; then
 fi
 
 # ==============================================================================
-# 4. PERSONALIZACIÓN DE PANTALLA DE INICIO GDM (FONDO + STICKER /etc/gdm-logo)
+# 4. PERSONALIZACIÓN DE GDM (STICKER /etc/gdm-logo + FONDO EN GRESOURCE)
 # ==============================================================================
 log_step "Configurando fondo, cursores y sticker en GDM..."
 
 GDM_ASSETS_DIR="/usr/share/backgrounds/linux-config"
 sudo mkdir -p "$GDM_ASSETS_DIR" /etc/dconf/profile /etc/dconf/db/gdm.d
 
-# Copiar cursores también a /usr/share/icons/ para que GDM pueda leerlos en el login
+# Copiar cursores a /usr/share/icons/ para el cursor de GDM
 if [ -d "$REPO_DIR/icons" ]; then
   for icon_pack in "$REPO_DIR"/icons/*; do
     [ -d "$icon_pack" ] || continue
@@ -127,6 +128,64 @@ if [ -f "$REPO_DIR/gdm/gdm-logo" ]; then
   GDM_LOGO_PATH="/etc/gdm-logo"
 fi
 
+# Parchear gnome-shell-theme.gresource para que GDM muestre el fondo real
+ORIG_GRESOURCE="/usr/share/gnome-shell/gnome-shell-theme.gresource"
+if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
+  if ! command -v glib-compile-resources >/dev/null 2>&1; then
+    log_info "Instalando glib2-devel para compilar el tema de GDM..."
+    sudo dnf install -y glib2-devel
+  fi
+
+  # Respaldar el gresource original una sola vez si no existe backup previo
+  if [ ! -f "${ORIG_GRESOURCE}.orig" ]; then
+    sudo cp -f "$ORIG_GRESOURCE" "${ORIG_GRESOURCE}.orig"
+  fi
+
+  WORK_DIR=$(mktemp -d)
+  mkdir -p "$WORK_DIR/theme"
+
+  # Extraer todos los recursos del tema original de GNOME Shell
+  for res in $(gresource list "${ORIG_GRESOURCE}.orig"); do
+    rel_path="${res#/org/gnome/shell/theme/}"
+    mkdir -p "$WORK_DIR/theme/$(dirname "$rel_path")"
+    gresource extract "${ORIG_GRESOURCE}.orig" "$res" > "$WORK_DIR/theme/$rel_path"
+  done
+
+  cp -f "$GDM_WALL_PATH" "$WORK_DIR/theme/$GDM_WALL_NAME"
+
+  # Generar el manifiesto XML para glib-compile-resources
+  {
+    echo '<?xml version="1.0" encoding="UTF-8"?>'
+    echo '<gresources>'
+    echo '  <gresource prefix="/org/gnome/shell/theme">'
+    (cd "$WORK_DIR/theme" && find . -type f | sed 's|^\./||' | sort | while read -r f; do
+      echo "    <file>${f}</file>"
+    done)
+    echo '  </gresource>'
+    echo '</gresources>'
+  } > "$WORK_DIR/theme/gnome-shell-theme.gresource.xml"
+
+  # Inyectar regla CSS de fondo en #lockDialogGroup dentro de gnome-shell.css
+  cat << CSS >> "$WORK_DIR/theme/gnome-shell.css"
+
+/* Custom GDM Wallpaper - linux-config */
+#lockDialogGroup {
+  background: #14181f url("resource:///org/gnome/shell/theme/${GDM_WALL_NAME}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+CSS
+
+  glib-compile-resources --sourcedir="$WORK_DIR/theme" \
+    --target="$WORK_DIR/gnome-shell-theme.gresource" \
+    "$WORK_DIR/theme/gnome-shell-theme.gresource.xml"
+
+  sudo cp -f "$WORK_DIR/gnome-shell-theme.gresource" "$ORIG_GRESOURCE"
+  rm -rf "$WORK_DIR"
+  log_success "Tema de GDM recompilado con tu fondo de pantalla."
+fi
+
 sudo tee /etc/dconf/profile/gdm > /dev/null << 'GDMPROF'
 user-db:user
 system-db:gdm
@@ -144,13 +203,6 @@ ICON_NAME=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || 
   echo "icon-theme=${ICON_NAME}"
   echo "clock-format='12h'"
   echo ""
-  echo "[org/gnome/desktop/background]"
-  if [ -n "$GDM_WALL_PATH" ]; then
-    echo "picture-uri='file://${GDM_WALL_PATH}'"
-    echo "picture-uri-dark='file://${GDM_WALL_PATH}'"
-    echo "picture-options='zoom'"
-  fi
-  echo ""
   echo "[org/gnome/login-screen]"
   if [ -n "$GDM_LOGO_PATH" ]; then
     echo "logo='${GDM_LOGO_PATH}'"
@@ -158,7 +210,7 @@ ICON_NAME=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || 
 } | sudo tee /etc/dconf/db/gdm.d/96-linux-config > /dev/null
 
 sudo dconf update
-log_success "GDM configurado (fondo sincronizado${GDM_LOGO_PATH:+ y sticker /etc/gdm-logo aplicado})."
+log_success "Perfil dconf de GDM actualizado."
 
 # ==============================================================================
 # 5. TEMA DE ARRANQUE GRUB2 (tachibana)
