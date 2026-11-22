@@ -49,6 +49,9 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 - Neovim
 - Fastfetch
 - Zsh
+- `zsh-autosuggestions`
+- `zsh-syntax-highlighting`
+- `util-linux-user`
 - Ninja
 - CMake
 - GCC
@@ -60,6 +63,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 ### Configuraciones
 *Este repositorio provee configuraciones para los siguientes programas o paquetes, pero no se limita a:*
 
+- zsh
 - ghostty
 - neovim
 - fastfetch
