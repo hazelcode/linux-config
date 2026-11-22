@@ -15,12 +15,16 @@ usage() {
   cat << 'HELP'
 Uso: ./install.sh [OPCIÓN]
 
-Opciones:
+Opciones de instalación (Sistema <- Repo):
   --all           Ejecuta toda la instalación y configuración (por defecto)
   --packages      Instala repositorios, paquetes DNF y Flatpaks
   --toolchains    Instala .NET 10.0, Rust y Roslyn LSP
   --dotfiles      Configura Zsh y copia dotfiles y ~/.config
   --appearance    Instala temas Material-BL, dconf, wallpaper y tema GRUB2
+
+Opciones de respaldo (Sistema -> Repo):
+  --sync          Copia tus configuraciones actuales del sistema hacia este repositorio
+  --push          Sincroniza tus configuraciones y las sube a GitHub automáticamente
   -h, --help      Muestra esta ayuda
 HELP
 }
@@ -46,6 +50,21 @@ case "$MODE" in
     ;;
   --appearance)
     "$SCRIPTS_DIR/04-appearance.sh"
+    ;;
+  --sync)
+    "$SCRIPTS_DIR/sync.sh"
+    ;;
+  --push)
+    "$SCRIPTS_DIR/sync.sh"
+    cd "$REPO_DIR"
+    if [ -n "$(git status --porcelain)" ]; then
+      git add -A
+      git commit -m "chore(sync): update desktop and dotfiles backup ($(date +%Y-%m-%d))"
+      git push
+      echo -e "\n\033[1;32m[OK]\033[0m Cambios sincronizados y subidos a GitHub."
+    else
+      echo -e "\n\033[1;34m[INFO]\033[0m No hay cambios nuevos que subir; el repositorio ya está al día."
+    fi
     ;;
   -h|--help)
     usage
