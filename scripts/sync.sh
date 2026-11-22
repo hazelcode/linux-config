@@ -20,7 +20,7 @@ log_warn()    { echo -e "${YELLOW}[AVISO]${NC} $1"; }
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # ==============================================================================
-# 1. SINCRONIZAR DOTFILES Y AJUSTES DE GNOME (dconf)
+# 1. SINCRONIZAR DOTFILES Y AJUSTES DE GNOME (dconf filtrado)
 # ==============================================================================
 log_step "Sincronizando dotfiles y dconf hacia el repositorio..."
 
@@ -30,8 +30,34 @@ if [ -f "$HOME/.zshrc" ]; then
 fi
 
 if command -v dconf >/dev/null 2>&1; then
-  dconf dump /org/gnome/ > "$REPO_DIR/dotfiles/gnome-settings.dconf"
-  log_success "Actualizado: dotfiles/gnome-settings.dconf"
+  DCONF_FILE="$REPO_DIR/dotfiles/gnome-settings.dconf"
+  : > "$DCONF_FILE"
+
+  DCONF_PATHS=(
+    "/org/gnome/desktop/interface/"
+    "/org/gnome/desktop/wm/preferences/"
+    "/org/gnome/desktop/wm/keybindings/"
+    "/org/gnome/desktop/peripherals/"
+    "/org/gnome/shell/extensions/"
+    "/org/gnome/settings-daemon/plugins/media-keys/"
+  )
+
+  for path in "${DCONF_PATHS[@]}"; do
+    section="${path#/}"
+    section="${section%/}"
+    dump_content=$(dconf dump "$path")
+    if [ -n "$dump_content" ]; then
+      echo "$dump_content" | sed -E -e "s|^\[/\]$|[${section}]|" -e "s|^\[(.*)\]$|[${section}/\1]|" >> "$DCONF_FILE"
+      echo "" >> "$DCONF_FILE"
+    fi
+  done
+
+  ENABLED_EXTS=$(dconf read /org/gnome/shell/enabled-extensions || true)
+  if [ -n "$ENABLED_EXTS" ]; then
+    printf "[org/gnome/shell]\nenabled-extensions=%s\n" "$ENABLED_EXTS" >> "$DCONF_FILE"
+  fi
+
+  log_success "Actualizado (filtrado y escribible): dotfiles/gnome-settings.dconf"
 fi
 
 # ==============================================================================
@@ -50,7 +76,6 @@ for dir in "${CONFIG_DIRS[@]}"; do
   if [ -d "$HOME/.config/$dir" ]; then
     rm -rf "${REPO_DIR:?}/config/${dir}"
     cp -a "$HOME/.config/$dir" "$REPO_DIR/config/"
-    # Evitar submódulos .git accidentales dentro de config/
     rm -rf "$REPO_DIR/config/$dir/.git"
     log_success "Actualizado: config/$dir"
   else

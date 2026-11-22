@@ -54,7 +54,7 @@ fi
 # ==============================================================================
 if [ -f "$REPO_DIR/dotfiles/gnome-settings.dconf" ]; then
   log_step "Restaurando configuraciones de GNOME (dconf)..."
-  dconf load /org/gnome/ < "$REPO_DIR/dotfiles/gnome-settings.dconf"
+  dconf load -f / < "$REPO_DIR/dotfiles/gnome-settings.dconf"
   log_success "Ajustes de GNOME restaurados."
 fi
 
