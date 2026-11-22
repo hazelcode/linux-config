@@ -50,12 +50,20 @@ if [ -d "$REPO_DIR/icons" ]; then
 fi
 
 # ==============================================================================
-# 2. RESTAURACIÓN DE AJUSTES DE GNOME (dconf)
+# 2. RESTAURACIÓN DE AJUSTES DE GNOME Y VENTANAS (dconf + gsettings)
 # ==============================================================================
 if [ -f "$REPO_DIR/dotfiles/gnome-settings.dconf" ]; then
-  log_step "Restaurando configuraciones de GNOME (dconf)..."
+  log_step "Restaurando configuraciones de GNOME y ventanas (dconf)..."
   dconf load -f / < "$REPO_DIR/dotfiles/gnome-settings.dconf"
   log_success "Ajustes de GNOME restaurados."
+fi
+
+if command -v gsettings >/dev/null 2>&1; then
+  log_info "Forzando estilo oscuro de ventanas y temas Material-BL..."
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' || true
+  gsettings set org.gnome.desktop.interface gtk-theme 'Material-BL-LB-Dark' || true
+  gsettings set org.gnome.desktop.wm.preferences theme 'Material-BL-LB-Dark' || true
+  gsettings set org.gnome.shell.extensions.user-theme name 'Material-BL-GS-Dark' 2>/dev/null || true
 fi
 
 # ==============================================================================

@@ -20,7 +20,7 @@ log_warn()    { echo -e "${YELLOW}[AVISO]${NC} $1"; }
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # ==============================================================================
-# 1. SINCRONIZAR DOTFILES Y AJUSTES DE GNOME (dconf filtrado)
+# 1. SINCRONIZAR DOTFILES Y AJUSTES DE GNOME / MUTTER (dconf filtrado)
 # ==============================================================================
 log_step "Sincronizando dotfiles y dconf hacia el repositorio..."
 
@@ -38,6 +38,7 @@ if command -v dconf >/dev/null 2>&1; then
     "/org/gnome/desktop/wm/preferences/"
     "/org/gnome/desktop/wm/keybindings/"
     "/org/gnome/desktop/peripherals/"
+    "/org/gnome/mutter/"
     "/org/gnome/shell/extensions/"
     "/org/gnome/settings-daemon/plugins/media-keys/"
   )
@@ -69,6 +70,7 @@ CONFIG_DIRS=(
   ghostty
   nvim
   fastfetch
+  gtk-3.0
   gtk-4.0
 )
 
