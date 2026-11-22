@@ -7,10 +7,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
-log_step() { echo -e "\n${CYAN}==>${NC} ${1}"; }
+log_info()    { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_step()    { echo -e "\n${CYAN}==>${NC} ${1}"; }
 log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
-log_warn() { echo -e "${YELLOW}[AVISO]${NC} $1"; }
+log_warn()    { echo -e "${YELLOW}[AVISO]${NC} $1"; }
 
 FEDORA_VER=$(rpm -E %fedora)
 
@@ -61,6 +61,10 @@ DNF_PACKAGES=(
   glib2-devel
   git
   gnome-tweaks
+  gnome-shell-extension-dash-to-dock
+  gnome-shell-extension-user-theme
+  gnome-shell-extension-appindicator
+  libappindicator-gtk3
   gcc
   gcc-c++
   clang

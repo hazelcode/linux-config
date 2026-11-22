@@ -80,6 +80,10 @@ cd linux-config
 - OpenJDK 25 LTS
 - Vscode *(Intencionalmente como paquete de sistema, no como Flatpak debido al sandbox)*
 - GNOME Tweaks
+- Extensión de GNOME: Dash To Dock
+- Extensión de GNOME: User Themes
+- Extensión de GNOME: AppIndicator and KStatusNotifierItem Support
+- `libappindicator-gtk3` *(Para el soporte de iconos en bandeja)*
 
 ### Configuraciones
 *Este repositorio provee configuraciones para los siguientes programas o paquetes, pero no se limita a:*

@@ -50,7 +50,31 @@ if [ -d "$REPO_DIR/icons" ]; then
 fi
 
 # ==============================================================================
-# 2. RESTAURACIÓN DE AJUSTES DE GNOME Y BOTONES DE VENTANA (dconf + gsettings)
+# 2. ACTIVACIÓN DE EXTENSIONES DE GNOME SHELL
+# ==============================================================================
+log_step "Activando extensiones de GNOME Shell..."
+
+EXTENSIONS=(
+  "dash-to-dock@micxgx.gmail.com"
+  "user-theme@gnome-shell-extensions.gcampax.github.com"
+  "appindicatorsupport@rgcjonas.gmail.com"
+  "background-logo@fedorahosted.org"
+)
+
+# Asegurar que las extensiones de usuario estén habilitadas globalmente
+gsettings set org.gnome.shell disable-user-extensions false || true
+
+for ext in "${EXTENSIONS[@]}"; do
+  if gnome-extensions list 2>/dev/null | grep -qx "$ext"; then
+    gnome-extensions enable "$ext" 2>/dev/null || true
+    log_success "Extensión activada: $ext"
+  else
+    log_info "Extensión registrada en dconf (se activará al reiniciar sesión): $ext"
+  fi
+done
+
+# ==============================================================================
+# 3. RESTAURACIÓN DE AJUSTES DE GNOME Y BOTONES DE VENTANA (dconf + gsettings)
 # ==============================================================================
 if [ -f "$REPO_DIR/dotfiles/gnome-settings.dconf" ]; then
   log_step "Restaurando configuraciones de GNOME y ventanas (dconf)..."
@@ -68,7 +92,7 @@ if command -v gsettings >/dev/null 2>&1; then
 fi
 
 # ==============================================================================
-# 3. FONDO DE PANTALLA PRINCIPAL (WALLPAPER)
+# 4. FONDO DE PANTALLA PRINCIPAL (WALLPAPER)
 # ==============================================================================
 log_step "Configurando fondo de pantalla principal..."
 
@@ -96,7 +120,7 @@ if [ -n "$FIRST_WALLPAPER" ]; then
 fi
 
 # ==============================================================================
-# 4. PERSONALIZACIÓN DE GDM (STICKER /etc/gdm-logo + FONDO EN GRESOURCE)
+# 5. PERSONALIZACIÓN DE GDM (STICKER /etc/gdm-logo + FONDO EN GRESOURCE)
 # ==============================================================================
 log_step "Configurando fondo, cursores y sticker en GDM..."
 
@@ -127,7 +151,6 @@ if [ -f "$REPO_DIR/gdm/gdm-logo" ]; then
   GDM_LOGO_PATH="/etc/gdm-logo"
 fi
 
-# Parchear gnome-shell-theme.gresource (variantes claro y oscuro para GNOME 50/51)
 ORIG_GRESOURCE="/usr/share/gnome-shell/gnome-shell-theme.gresource"
 if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
   if ! command -v glib-compile-resources >/dev/null 2>&1; then
@@ -161,7 +184,6 @@ if [ -n "$GDM_WALL_PATH" ] && [ -f "$ORIG_GRESOURCE" ]; then
     echo '</gresources>'
   } > "$WORK_DIR/theme/gnome-shell-theme.gresource.xml"
 
-  # Inyectar en gnome-shell.css y gnome-shell-dark.css (GNOME 50+)
   for css_file in "$WORK_DIR/theme/gnome-shell.css" "$WORK_DIR/theme/gnome-shell-dark.css"; do
     if [ -f "$css_file" ]; then
       cat << CSS >> "$css_file"
@@ -215,7 +237,7 @@ sudo dconf update
 log_success "Perfil dconf de GDM actualizado."
 
 # ==============================================================================
-# 5. TEMA DE ARRANQUE GRUB2 (tachibana)
+# 6. TEMA DE ARRANQUE GRUB2 (tachibana)
 # ==============================================================================
 log_step "Instalando tema de GRUB2 (tachibana)..."
 
