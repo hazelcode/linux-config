@@ -1,5 +1,7 @@
 # linux-config
 
+![screenshot](screenshots/screenshot1.png)
+
 Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores como yo. Todo lo que se instala y configura aquí tiene opinión propia y personalidad, conforme a mis gustos personales y mi stack de desarrollo de software.
 
 ## Preferencias personales
