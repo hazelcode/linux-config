@@ -1,0 +1,274 @@
+[Ptyxis]
+default-profile-uuid='e296bea4b0daa25d96be59816af3d337'
+profile-uuids=['e296bea4b0daa25d96be59816af3d337']
+window-size=(uint32 80, uint32 24)
+
+[Showtime/State]
+is-maximized=false
+
+[boxes]
+first-run=false
+view='icon-view'
+window-maximized=false
+window-position=[26, 23]
+window-size=[768, 600]
+
+[calendar]
+active-view='month'
+window-maximized=false
+window-size=(768, 600)
+
+[clocks/state/window]
+maximized=false
+panel-id='stopwatch'
+size=(870, 690)
+
+[control-center]
+last-panel='background'
+window-state=(980, 640, false)
+
+[desktop/app-folders]
+folder-children=['System', 'Utilities', 'YaST', 'Pardus']
+
+[desktop/app-folders/folders/Pardus]
+categories=['X-Pardus-Apps']
+name='X-Pardus-Apps.directory'
+translate=true
+
+[desktop/app-folders/folders/System]
+apps=['org.gnome.baobab.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.Logs.desktop', 'org.freedesktop.MalcontentControl.desktop', 'org.gnome.SystemMonitor.desktop']
+name='X-GNOME-Shell-System.directory'
+translate=true
+
+[desktop/app-folders/folders/Utilities]
+apps=['org.gnome.Decibels.desktop', 'org.gnome.Connections.desktop', 'org.gnome.Papers.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Loupe.desktop', 'org.gnome.Showtime.desktop']
+name='X-GNOME-Shell-Utilities.directory'
+translate=true
+
+[desktop/app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
+[desktop/background]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/ado/.local/share/backgrounds/2026-11-21-15-26-04-1409642.png'
+picture-uri-dark='file:///home/ado/.local/share/backgrounds/2026-11-21-15-26-04-1409642.png'
+primary-color='#000000000000'
+secondary-color='#000000000000'
+
+[desktop/input-sources]
+current=uint32 0
+mru-sources=[('xkb', 'us'), ('xkb', 'latam+deadtilde')]
+sources=[('xkb', 'latam')]
+xkb-options=['grp:alt_shift_toggle']
+
+[desktop/interface]
+clock-format='12h'
+color-scheme='prefer-dark'
+cursor-theme='Capitaine Cursors'
+gtk-theme='Material-BL-LB-Dark'
+toolkit-accessibility=false
+
+[desktop/notifications]
+application-children=['org-gnome-software', 'org-gnome-showtime', 'gnome-power-panel', 'com-microsoft-vscode', 'artcraft-launcher', 'org-gnome-settings', 'io-github-nozwock-packet', 'gnome-printers-panel', 'glassy-music', 'com-rtosta-zapzap', 'gnome-about-panel', 'brave-browser', 'org-gnome-nautilus']
+
+[desktop/notifications/application/artcraft-launcher]
+application-id='artcraft_launcher.desktop'
+
+[desktop/notifications/application/brave-browser]
+application-id='brave-browser.desktop'
+
+[desktop/notifications/application/com-microsoft-vscode]
+application-id='com.microsoft.VSCode.desktop'
+
+[desktop/notifications/application/com-rtosta-zapzap]
+application-id='com.rtosta.zapzap.desktop'
+
+[desktop/notifications/application/glassy-music]
+application-id='glassy_music.desktop'
+
+[desktop/notifications/application/gnome-about-panel]
+application-id='gnome-about-panel.desktop'
+
+[desktop/notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[desktop/notifications/application/gnome-printers-panel]
+application-id='gnome-printers-panel.desktop'
+
+[desktop/notifications/application/io-github-nozwock-packet]
+application-id='io.github.nozwock.Packet.desktop'
+
+[desktop/notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[desktop/notifications/application/org-gnome-settings]
+application-id='org.gnome.Settings.desktop'
+
+[desktop/notifications/application/org-gnome-showtime]
+application-id='org.gnome.Showtime.desktop'
+
+[desktop/notifications/application/org-gnome-software]
+application-id='org.gnome.Software.desktop'
+
+[desktop/peripherals/touchpad]
+send-events='disabled'
+
+[desktop/privacy]
+report-technical-problems=false
+
+[desktop/screensaver]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/ado/.local/share/backgrounds/2026-11-21-15-26-04-1409642.png'
+primary-color='#000000000000'
+secondary-color='#000000000000'
+
+[desktop/wm/preferences]
+button-layout='close,minimize,maximize:appmenu'
+
+[gnome-system-monitor]
+current-tab='processes'
+maximized=false
+show-dependencies=false
+show-whose-processes='user'
+window-height=720
+window-width=800
+
+[gnome-system-monitor/proctree]
+col-26-visible=false
+col-26-width=0
+
+[login-screen]
+enable-fingerprint-authentication=true
+enable-smartcard-authentication=false
+enable-switchable-authentication=false
+
+[nautilus/preferences]
+migrated-gtk-settings=true
+
+[nautilus/window-state]
+initial-size=(1291, 800)
+initial-size-file-chooser=(890, 550)
+
+[nm-applet/eap/0724c3f0-fbf1-45be-8151-9190f607b3d2]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[papers]
+night-mode=false
+
+[papers/default]
+annot-color='yellow'
+continuous=true
+dual-page=false
+dual-page-odd-left=false
+enable-spellchecking=true
+eraser-mode-objects='true'
+highlight-color='yellow'
+highlight-stroke=2.0
+pen-color='blue'
+pen-stroke=1.0
+show-sidebar=true
+sizing-mode='automatic'
+text-color='blue'
+window-height=1168
+
+[papers/previewer]
+window-height=1000
+window-width=800
+
+[portal/filechooser/com.github.IsmaelMartinez.teams_for_linux]
+last-folder-path='/home/ado/Documentos/Universidad'
+
+[portal/filechooser/com.obsproject.Studio]
+last-folder-path='/home/ado/Vídeos'
+
+[portal/filechooser/com.rtosta.zapzap]
+last-folder-path='/home/ado/Descargas/WhatsApp'
+
+[portal/filechooser/io.github.realmazharhussain.GdmSettings]
+last-folder-path='/home/ado/Imágenes/Stickers'
+
+[portal/filechooser/it.mijorus.gearlever]
+last-folder-path='/home/ado/AppImages'
+
+[portal/filechooser/org.gnome.Settings]
+last-folder-path='/home/ado/Imágenes/Wallpapers'
+
+[portal/filechooser/org.gnome.SimpleScan]
+last-folder-path='/home/ado/Documentos/Universidad'
+
+[settings-daemon/global-shortcuts]
+applications=['serein']
+
+[settings-daemon/global-shortcuts/serein]
+shortcuts=[('toggle-mute', {'shortcuts': <['<Shift><Control>m']>, 'description': <'Toggle Serein microphone mute'>}), ('toggle-deafen', {'shortcuts': <['<Shift><Control>d']>, 'description': <'Toggle Serein deafen'>})]
+
+[settings-daemon/plugins/color]
+night-light-schedule-automatic=false
+
+[settings-daemon/plugins/housekeeping]
+donation-reminder-last-shown=int64 1795056808516808
+
+[settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+home=['<Super>e']
+
+[settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Control><Alt>t'
+command='ghostty'
+name='Ghostty'
+
+[settings-daemon/plugins/power]
+power-button-action='suspend'
+
+[shell]
+app-picker-layout=[{'org.gnome.Contacts.desktop': <{'position': <0>}>, 'org.fedoraproject.MediaWriter.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.SimpleScan.desktop': <{'position': <6>}>, 'org.gnome.Settings.desktop': <{'position': <7>}>, 'org.gnome.Boxes.desktop': <{'position': <8>}>, 'org.gnome.Snapshot.desktop': <{'position': <9>}>, 'org.gnome.Characters.desktop': <{'position': <10>}>, 'Utilities': <{'position': <11>}>, 'System': <{'position': <12>}>, 'libreoffice-impress.desktop': <{'position': <13>}>, 'org.gnome.Tour.desktop': <{'position': <14>}>, 'org.gnome.Yelp.desktop': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'org.gnome.Ptyxis.desktop': <{'position': <17>}>, 'com.obsproject.Studio.desktop': <{'position': <18>}>, 'nvidia-settings.desktop': <{'position': <19>}>, 'org.gnome.tweaks.desktop': <{'position': <20>}>, 'org.gnome.Extensions.desktop': <{'position': <21>}>}, {'io.github.realmazharhussain.GdmSettings.desktop': <{'position': <0>}>, 'org.mozilla.firefox.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Calculator.desktop': <{'position': <3>}>, 'it.mijorus.gearlever.desktop': <{'position': <4>}>, 'modrinth_app.desktop': <{'position': <5>}>, 'org.apache.netbeans.desktop': <{'position': <6>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <7>}>, 'artcraft_launcher.desktop': <{'position': <8>}>, 'htop.desktop': <{'position': <9>}>, 'org.vinegarhq.Sober.desktop': <{'position': <10>}>, 'steam.desktop': <{'position': <11>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <12>}>, 'com.microsoft.VSCode.desktop': <{'position': <13>}>, 'ai.storyteller.wordcraft.desktop': <{'position': <14>}>, 'glassy_music.desktop': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'osu.desktop': <{'position': <17>}>, 'io.github.nozwock.Packet.desktop': <{'position': <18>}>, 'serein.desktop': <{'position': <19>}>, 'com.rtosta.zapzap.desktop': <{'position': <20>}>}]
+disabled-extensions=['apps-menu@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'appindicatorsupport@rgcjonas.gmail.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']
+favorite-apps=['brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'com.mitchellh.ghostty.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop']
+last-selected-power-profile='power-saver'
+welcome-dialog-last-shown-version='51.0'
+
+[shell/extensions/dash-to-dock]
+apply-custom-theme=false
+background-opacity=0.97999999999999998
+click-action='minimize'
+custom-theme-shrink=false
+dash-max-icon-size=48
+dock-position='BOTTOM'
+height-fraction=0.90000000000000002
+preferred-monitor=-2
+preferred-monitor-by-connector='eDP-1'
+transparency-mode='DEFAULT'
+
+[shell/extensions/user-theme]
+name='Material-BL-LB-Dark'
+
+[shell/keybindings]
+show-screenshot-ui=['<Shift><Super>s']
+
+[shell/world-clocks]
+locations=@av []
+
+[simple-scan]
+save-directory='file:///home/ado/Documentos/Universidad/'
+save-format='application/pdf'
+
+[software]
+check-timestamp=int64 1795288068
+first-run=false
+flatpak-purge-timestamp=int64 1795312790
+install-timestamp=int64 1794588622
+packagekit-historical-updates-timestamp=uint64 1794588622
+security-timestamp=int64 1794578475040180
+update-notification-timestamp=int64 1794578503
+
+[system/location]
+enabled=false
+
+[tweaks]
+show-extensions-notice=false
