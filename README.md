@@ -54,6 +54,7 @@ Mis configuraciones opinadas personales de Linux, elegidas para desarrolladores 
 - `util-linux-user`
 - Ninja
 - CMake
+- Make
 - GCC
 - Clang
 - OpenJDK 25 LTS
